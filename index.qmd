@@ -1,9 +1,23 @@
 ---
-title: "Assignment 04"
-format: html
-editor: Jingxuan Wang
+title: "Visualization of data on Tokyo Olympics 2021"
+Author: Jingxuan Wang
+date: 10/02/2022
+output: html_document
 ---
 
 ```{r}
+#Data setup
+library(readxl)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+athletes <- read_excel("data/Athletes.xlsx")
+gender <- read_excel("data/EntriesGender.xlsx")
+medals <- read_excel("data/Medals.xlsx")
+```
 
+All the data comes from the 2021 Tokyo Olympics. This analysis includes athletes, genders, and number of medals by countries.
+
+```{r}
+#Top 
 ```
