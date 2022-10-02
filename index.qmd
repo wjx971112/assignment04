@@ -11,6 +11,10 @@ library(readxl)
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
+library(colorspace)  
+library(RColorBrewer)
+library(ggthemes)
+library(forcats)
 athletes <- read_excel("data/Athletes.xlsx")
 gender <- read_excel("data/EntriesGender.xlsx")
 medals <- read_excel("data/Medals.xlsx")
@@ -19,5 +23,23 @@ medals <- read_excel("data/Medals.xlsx")
 All the data comes from the 2021 Tokyo Olympics. This analysis includes athletes, genders, and number of medals by countries.
 
 ```{r}
-#Top 
+#Top 10 number of athletes by country 
+athletes %>%
+  count(NOC, sort = TRUE) %>%
+  slice(1:10) %>%
+  group_by(NOC) %>%
+  ggplot(aes(x=reorder(NOC, desc(n)), y=n, fill = n)) +
+  geom_col(color = "black") +
+  labs(title = "Top 10 Countries by the Number of Athletes", x= "Countries", 
+                y = "Number of Athletes", subtitle = "Number of Athelets")+
+theme(axis.text.x = element_text(size = 8, color = "red", face = "bold.italic", angle = 50, hjust = 1), 
+        axis.title.y = element_text( size = 8, color = "red", face = "bold.italic"))+
+  ylim(c(0, 1000))+
+  geom_text(mapping = aes(label = n, size = 12, color = "red", face = "bold.italic", vjust = -1))+
+  theme(legend.position = "none")
+```
+
+```{r}
+# Athletes Genders and Disciplines
+
 ```
