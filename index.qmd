@@ -18,9 +18,11 @@ library(forcats)
 athletes <- read_excel("data/Athletes.xlsx")
 gender <- read_excel("data/EntriesGender.xlsx")
 medals <- read_excel("data/Medals.xlsx")
+coaches <- read_excel("data/Coaches.xlsx")
+historical <- read_csv("data/All Year Olympic Dataset (with 2020 Tokyo Olympics).csv")
 ```
 
-All the data comes from the 2021 Tokyo Olympics. This analysis includes athletes, genders, and number of medals by countries.
+There are 2 datasets included in this analysis. The first is historical data during the past 120 years history of the olympic (1896-2016). The second dataset is the dataset for 2021 Tokyo Olympics. This analysis includes athletes, genders, coaches, and number of medals by countries.
 
 ```{r}
 #Top 10 number of athletes by country 
@@ -40,6 +42,80 @@ theme(axis.text.x = element_text(size = 8, color = "red", face = "bold.italic", 
 ```
 
 ```{r}
-# Athletes Genders and Disciplines
+# Numbers of athelets v.s. Number of Coaches
+medals_break_country <- medals %>%
+rename(country = 'Team/NOC', 
+       rank = 'Rank by Total') %>%
+pivot_longer(Gold:Bronze,names_to = "medal", 
+             values_to = "number_of_medal") %>%
+transform(number_of_medal = as.numeric(number_of_medal), 
+          Total = as.numeric(Total), 
+          rank = as.numeric(rank))  %>%
+arrange(rank) %>%
+  slice(1:15) 
+
+ggplot(medals_break_country,aes(reorder(country,number_of_medal),
+           number_of_medal,
+           fill = factor(medal, levels = c("Bronze","Silver","Gold")))) + 
+geom_col(col="black") +
+labs(fill = "Type of medal",
+     y="Number of medal (Medal)",
+     x="Country",
+     title='Number of medals breakdown by country',
+     subtitle='Top 5') +
+coord_flip() +  
+theme(plot.title = element_text(hjust=0.5,size=16),
+      axis.text.x = element_text(size=12),
+     axis.text.y = element_text(size=12),
+     axis.title = element_text(size=12),
+     plot.subtitle = element_text(hjust=0.5,size=8)) +
+ylim(0,120)
+```
+
+```{r}
+#Athletes Age distribution for Top5 medal countries in Tokyo
+historical %>%
+filter(Year == 2020) %>%
+filter(Team == "United States of America" | Team == "People's Republic of China"|Team == "RPC"|Team == "Great Britain"|Team == "Japan")%>%
+ggplot(aes(x=Age,fill = Team))+
+geom_density(alpha = 0.7)+
+labs(title = 'Distribution of Age for all Athletes',
+    subtitle = 'Top 5 Medals Own Countries',
+    x= 'Age',
+    y='')
+
+historical %>%
+filter(Medal >0, Year == 2020) %>%
+filter(Team == "United States of America" | Team == "People's Republic of China"|Team == "RPC"|Team == "Great Britain"|Team == "Japan")%>%
+ggplot(aes(x=Age,fill = Team))+
+geom_dotplot(alpha = 0.7)+
+labs(title = 'Distribution of Age for Medal Winners',
+    subtitle = 'Top 5 Medals Win Countries',
+    x= 'Age',
+    y='')+
+  ylim(0,200)
+```
+```{r}
+#Gender Distribution
+his <- historical %>%
+  filter(Year == 2020) %>%
+  filter(Team == "United States of America" | Team == "People's Republic of China"|Team == "RPC"|Team == "Great Britain"|Team == "Japan")%>%
+  group_by(Team) %>%
+  count(Sex)
+his
+
+ggplot(his,aes(n,Team,fill=Sex))+
+geom_line(aes(group=Team))+
+geom_point(shape=21,size=3.5,colour="darkgray")+
+  geom_text(color="black", size=3, hjust=-0.2,vjust = -0.5,
+          aes(x=n, label=n))+
+  labs(title = 'Gender Distribution for all Athletes',
+    subtitle = 'Top 5 Medals Own Countries',
+    x= 'Number of Athletes',
+    y='')+
+  scale_x_continuous(breaks = seq(50, 300, 10))
 
 ```
+
+
+
