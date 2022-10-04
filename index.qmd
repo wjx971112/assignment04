@@ -1,5 +1,5 @@
 ---
-title: "Visualization of data on Tokyo Olympics 2021"
+title: "Visualization of Data on Tokyo Olympics 2021"
 Author: Jingxuan Wang
 date: 10/02/2022
 output: html_document
@@ -22,14 +22,14 @@ coaches <- read_excel("data/Coaches.xlsx")
 historical <- read_csv("data/All Year Olympic Dataset (with 2020 Tokyo Olympics).csv")
 ```
 
-There are 2 datasets included in this analysis. The first is historical data during the past 120 years history of the olympic (1896-2016). The second dataset is the dataset for 2021 Tokyo Olympics. This analysis includes athletes, genders, coaches, and number of medals by countries.
+There are 2 datasets included in this analysis. The first dataset is the information collected from 2021 Tokyo Olympics. It includes the number of athletes, gender, total number of medals, and number of coaches. The second dataset is the historical data including all athelets information from 1896 to 2021. The information includes name, age, sex, year of attending, winter/summer olympics, number of medal, and sport details. The following analysis is aimed to present the pattern of athletes from top medal winners in 2021 Tokyo. 
 
 ```{r}
 #Top 10 number of athletes by country 
 athletes %>%
   count(NOC, sort = TRUE) %>%
   slice(1:10) %>%
-  group_by(NOC) %>%
+  group_by(NOC) %>% 
   ggplot(aes(x=reorder(NOC, desc(n)), y=n, fill = n)) +
   geom_col(color = "black") +
   labs(title = "Top 10 Countries by the Number of Athletes", x= "Countries", 
@@ -39,6 +39,8 @@ theme(axis.text.x = element_text(size = 8, color = "red", face = "bold.italic", 
   ylim(c(0, 1000))+
   geom_text(mapping = aes(label = n, size = 12, color = "red", face = "bold.italic", vjust = -1))+
   theme(legend.position = "none")
+
+#This graph gives a ranking of the number of total athletes attended the Tokyo Olympics. It shows the population base of each country and how different countries emphasize on the olympic games. The number of athletes will be the reference in the following analysis on the number of medals that each country wins. Since Japan is the host of the game, it has the second highest number of athletes, compared to other countries with higher population level. 
 ```
 
 ```{r}
@@ -63,13 +65,14 @@ labs(fill = "Type of medal",
      x="Country",
      title='Number of medals breakdown by country',
      subtitle='Top 5') +
-coord_flip() +  
-theme(plot.title = element_text(hjust=0.5,size=16),
-      axis.text.x = element_text(size=12),
-     axis.text.y = element_text(size=12),
-     axis.title = element_text(size=12),
-     plot.subtitle = element_text(hjust=0.5,size=8)) +
-ylim(0,120)
+  coord_flip()+
+  theme(plot.title = element_text(hjust=0.5,size=16),
+        axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12),
+        axis.title = element_text(size=12),
+        plot.subtitle = element_text(hjust=0.5,size=8))+
+  ylim(0,120)
+# This graph shows the ranking of Top 5 medal winning countries. Compared to the number of athletes, we can see that four out of five countries are within the top 10 number of athletes attending the Olympic games. The only exception ins ROC, which might due to the sanction on Russia. But the overall pattern is those countries with more athletes will win more medals in the game. 
 ```
 
 ```{r}
@@ -94,6 +97,7 @@ labs(title = 'Distribution of Age for Medal Winners',
     x= 'Age',
     y='')+
   ylim(0,200)
+# This graph shows the age distribution of medal winning athletes from Top 5 medal winner countries. We can see the PRC has the highest number of athletes between 20-35, which is the age that people has the best physical condition. For the medal winners over age 50, the athletes come from the US, China and UK. It might prove the technology and training level of the athletes from those country, so that they can maintain a higher competition level. 
 ```
 ```{r}
 #Gender Distribution
@@ -107,14 +111,15 @@ his
 ggplot(his,aes(n,Team,fill=Sex))+
 geom_line(aes(group=Team))+
 geom_point(shape=21,size=3.5,colour="darkgray")+
-  geom_text(color="black", size=3, hjust=-0.2,vjust = -0.5,
+  geom_text(color="black", size=3, hjust=0.5,vjust = -1,
           aes(x=n, label=n))+
   labs(title = 'Gender Distribution for all Athletes',
     subtitle = 'Top 5 Medals Own Countries',
     x= 'Number of Athletes',
     y='')+
-  scale_x_continuous(breaks = seq(50, 300, 10))
-
+  scale_x_continuous(breaks = seq(50, 300, 10))+
+  xlim(90,155)
+# This graph shows the gender distribution of athletes from Top 5 medal winning countries. From the graph we can see the US has the smallest gender gap between men and women athletes. The largest gap comes from Japan, which men is about 50% more than the number of women athletes. The gender gap will shows the gender equality level of the country in the athletic sports. 
 ```
 
 
