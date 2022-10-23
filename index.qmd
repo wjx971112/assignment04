@@ -3,6 +3,7 @@ title: "Visualization of Data on Tokyo Olympics 2021"
 Author: Jingxuan Wang
 date: 10/02/2022
 output: html_document
+Author: Jingxuan Wang
 ---
 
 ```{r}
@@ -22,7 +23,7 @@ coaches <- read_excel("data/Coaches.xlsx")
 historical <- read_csv("data/All Year Olympic Dataset (with 2020 Tokyo Olympics).csv")
 ```
 
-There are 2 datasets included in this analysis. The first dataset is the information collected from 2021 Tokyo Olympics. It includes the number of athletes, gender, total number of medals, and number of coaches. The second dataset is the historical data including all athelets information from 1896 to 2021. The information includes name, age, sex, year of attending, winter/summer olympics, number of medal, and sport details. The following analysis is aimed to present the pattern of athletes from top medal winners in 2021 Tokyo. 
+There are 2 datasets included in this analysis. The first dataset is the information collected from 2021 Tokyo Olympics. It includes the number of athletes, gender, total number of medals, and number of coaches. The second dataset is the historical data including all athelets information from 1896 to 2021. The information includes name, age, sex, year of attending, winter/summer olympics, number of medal, and sport details. The following analysis is aimed to present the pattern of athletes from top medal winners in 2021 Tokyo.
 
 ```{r}
 #Top 10 number of athletes by country 
@@ -99,6 +100,7 @@ labs(title = 'Distribution of Age for Medal Winners',
   ylim(0,200)
 # This graph shows the age distribution of medal winning athletes from Top 5 medal winner countries. We can see the PRC has the highest number of athletes between 20-35, which is the age that people has the best physical condition. For the medal winners over age 50, the athletes come from the US, China and UK. It might prove the technology and training level of the athletes from those country, so that they can maintain a higher competition level. 
 ```
+
 ```{r}
 #Gender Distribution
 his <- historical %>%
@@ -121,6 +123,3 @@ geom_point(shape=21,size=3.5,colour="darkgray")+
   xlim(90,155)
 # This graph shows the gender distribution of athletes from Top 5 medal winning countries. From the graph we can see the US has the smallest gender gap between men and women athletes. The largest gap comes from Japan, which men is about 50% more than the number of women athletes. The gender gap will shows the gender equality level of the country in the athletic sports. 
 ```
-
-
-
